@@ -21,12 +21,10 @@ async function fetchArtwork(album) {
     if (json.resultCount > 0) {
       const albumData = /** @type {import("./iTunesSearchResult.d.ts").iTunesSearchResult} */ (json.results[0]);
       const highResUrl = albumData.artworkUrl100.replace("100x100bb", "6000x6000bb");
-      const lowResUrl = albumData.artworkUrl100;
 
       console.log(`Downloading artwork for: ${albumData.collectionName}`);
 
       await downloadAndSaveImage(highResUrl, `./${sanitizeFilename(albumData.collectionName)}_highres.jpg`);
-      await downloadAndSaveImage(lowResUrl, `./${sanitizeFilename(albumData.collectionName)}_lowres.jpg`);
 
       console.log("Download complete.");
     } else {
