@@ -1,24 +1,18 @@
 #!/usr/bin/env node
 
-import { get } from "node:https";
-
 /**
  * Fetch album artwork from iTunes Search API.
  * @param {string} album - Album name or artist + album.
  */
-function fetchArtwork(album) {
+async function fetchArtwork(album) {
   const url = `https://itunes.apple.com/search?term=${encodeURIComponent(album)}&media=music&entity=album&limit=1`;
 
-  get(url, (res) => {
-    let data = "";
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-    res.on("data", (chunk) => {
-      data += chunk;
-    });
+        const json = await response.json();
 
-    res.on("end", () => {
-      try {
-        const json = JSON.parse(data);
         if (json.resultCount > 0) {
           const artworkUrl = json.results[0].artworkUrl100.replace("100x100bb", "1200x1200bb"); // Get high-res version
           console.log(`Artwork URL: ${artworkUrl}`);
@@ -28,11 +22,6 @@ function fetchArtwork(album) {
       } catch (error) {
         console.error("Error parsing response:", error);
       }
-    });
-
-  }).on("error", (err) => {
-    console.error("Request failed:", err);
-  });
 }
 
 // Example usage
