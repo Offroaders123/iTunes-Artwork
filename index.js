@@ -11,17 +11,17 @@ async function fetchArtwork(album) {
     const response = await fetch(url);
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-        const json = await response.json();
+    const json = await response.json();
 
-        if (json.resultCount > 0) {
-          const artworkUrl = json.results[0].artworkUrl100.replace("100x100bb", "1200x1200bb"); // Get high-res version
-          console.log(`Artwork URL: ${artworkUrl}`);
-        } else {
-          console.log("No results found.");
-        }
-      } catch (error) {
-        console.error("Error parsing response:", error);
-      }
+    if (json.resultCount > 0) {
+      const artworkUrl = json.results[0].artworkUrl100.replace("100x100bb", "1200x1200bb"); // Get high-res version
+      console.log(`Artwork URL: ${artworkUrl}`);
+    } else {
+      console.log("No results found.");
+    }
+  } catch (error) {
+    console.error("Error parsing response:", error);
+  }
 }
 
 // Example usage
