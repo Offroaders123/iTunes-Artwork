@@ -11,10 +11,12 @@ async function fetchArtwork(album) {
     const response = await fetch(url);
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-    const json = await response.json();
+    /** @type {import("./iTunesSearchResult.d.ts").iTunesSearchResponse} */
+    const json = /** @type {any} */ (await response.json());
+    // console.log(json);
 
     if (json.resultCount > 0) {
-      const artworkUrl = json.results[0].artworkUrl100.replace("100x100bb", "1200x1200bb"); // Get high-res version
+      const artworkUrl = /** @type {import("./iTunesSearchResult.d.ts").iTunesSearchResult} */ (json.results[0]).artworkUrl100.replace("100x100bb", "1200x1200bb"); // Get high-res version
       console.log(`Artwork URL: ${artworkUrl}`);
     } else {
       console.log("No results found.");
